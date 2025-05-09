@@ -30,6 +30,7 @@ namespace InsuranceApp
         // Constant Variable
         static readonly float DISCOUNT = 0.10f;
 
+
         // Summative values
 
 
@@ -112,138 +113,202 @@ namespace InsuranceApp
 
                 Console.WriteLine("Error: Invalid device category entered");
             }
-
-            // Changes the decimal point after the finacial calculations to 2 decimal points
-            static string FormatToDollar(float value)
-            {
-                return string.Format(("{0:0.00}"), value);
-
-            }
-
-
-
-
-
-
-            static void OneDevice()
-            {
-                // local declerations 
-                string deviceName;
-                int numberOfDevices;
-                float totalDeviceCost;
-
-
-
-
-                // Input device name
-                deviceName = CheckDeviceName();
-
-
-                // Input the number of devices in each name
-                Console.WriteLine("Enter the number of devices:");
-                numberOfDevices = Convert.ToInt32(Console.ReadLine());
-
-                // Input Device Cost
-                Console.WriteLine("Enter cost for each device:");
-                float deviceCost = Convert.ToInt32(Console.ReadLine());
-
-                // device value loss equation
-
-                double percentage = 5.0;
-                double newDeviceValue = deviceCost;
-
-
-
-
-
-
-                // Device Category counter
-
-                string category = CheckDeviceCategory().Trim().ToUpper();
-
-                if (category == "LAPTOP")
-                {
-                    numberOfLaptops += numberOfDevices;
-                }
-                else if (category == "DESKTOP")
-                {
-                    numberOfDesktops += numberOfDevices;
-                }
-                else
-                {
-                    numberOfOtherDevices += numberOfDevices;
-                }
-
-
-                //Display cost of  the devices
-                totalDeviceCost = numberOfDevices * deviceCost;
-                sumDeviceInput += totalDeviceCost;
-
-                Console.WriteLine("\n----- Insurance Summary -----");
-                Console.WriteLine($"\nTotal cost for {numberOfDevices} x {deviceName} = {totalDeviceCost}.");
-                Console.WriteLine("Month:   Value Loss:");
-
-                //loop 6 times
-                double subtractionAmount;
-                for (int monthCounter = 1; monthCounter <= 6; monthCounter++)
-                {
-                    subtractionAmount = (percentage / 100) * newDeviceValue;
-                    newDeviceValue = newDeviceValue - subtractionAmount;
-
-                    Console.WriteLine($"{monthCounter}\t\t{Math.Round(newDeviceValue, 2)}");
-
-                }
-                Console.WriteLine($"Category: {CheckDeviceCategory}\n");
-
-                // Display most expensive device name and cost
-
-                if (deviceCost > mostExpensiveDevice)
-                {
-                    mostExpensiveDevice = deviceCost;
-                    mostExpensiveDeviceName = deviceName;
-                }
-
-            }
-
-
-
-            static int NumberOfDevices(List<int> deviceAmount)
-            {
-                int numberOfDevices = 0;
-
-                foreach (int device in deviceAmount)
-                {
-                    numberOfDevices += device;
-                }
-
-                return numberOfDevices;
-            }
-
-            // When run...
-            static void Main(string[] args)
-            {
-
-
-                string proceed = "";
-                while (proceed.Equals(""))
-                {
-                    OneDevice();
-
-                    proceed = CheckProceed();
-
-                }
-
-                Console.WriteLine("\n----- Summative Report -----");
-                Console.WriteLine($"\nNumber of Laptops: {numberOfLaptops}");
-                Console.WriteLine($"Number of Desktops: {numberOfDesktops}");
-                Console.WriteLine($"Number of Other Devices: {numberOfOtherDevices}");
-
-                Console.WriteLine($"\nTotal amount value of insurance: ${FormatToDollar(sumDeviceInput)}");
-
-                Console.WriteLine($"\nMost expensive device is - {mostExpensiveDeviceName} @ ${FormatToDollar(mostExpensiveDevice)}");
-
-            }
         }
+
+        // Changes the decimal point after the finacial calculations to 2 decimal points
+        static string FormatToDollar(float value)
+        {
+            return string.Format(("{0:0.00}"), value);
+
+        }
+
+        static int CheckDeviceNumber()
+        {
+            //local declarations
+            int numberOfDevices;
+
+
+            while (true)
+            {
+
+                try
+                {
+                    Console.WriteLine("Enter the number of devices:");
+                    numberOfDevices = Convert.ToInt32(Console.ReadLine());
+
+                    if (numberOfDevices >= 1 && numberOfDevices <= 1000)
+                    {
+                        return numberOfDevices;
+                    }
+
+                    Console.WriteLine("Error: Number of devices must be between 1 and 1000");
+
+                }
+
+
+                catch
+                {
+                    Console.WriteLine("Error: Invalid number of devices entered");
+                }
+
+                
+            }
+
+
+        }
+
+        static float CheckDeviceCost()
+        {
+            //local declarations
+            float TotalDeviceCost;
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Enter cost for each device:");
+                    float deviceCost = Convert.ToInt32(Console.ReadLine());
+
+                    if (deviceCost >= 200 && deviceCost <= 1000)
+                    {
+                        return deviceCost;
+                    }
+
+                    Console.WriteLine("Error: Cost of devices must be between 200 and 1000");
+
+                }
+
+                catch
+                {
+                    Console.WriteLine("Error: Invalid cost for devices entered");
+                }
+
+            }
+
+        }
+
+
+        static void OneDevice()
+        {
+            // local declerations 
+            string deviceName;
+            int numberOfDevices;
+            float totalDeviceCost;
+            float deviceCost;
+
+
+
+
+            // Input device name
+            deviceName = CheckDeviceName();
+
+
+            // Input the number of devices in each name
+            numberOfDevices = CheckDeviceNumber();
+
+            // Input Device Cost
+            deviceCost = CheckDeviceCost();
+
+            // device value loss equation
+
+            double percentage = 5.0;
+            double newDeviceValue = deviceCost;
+
+
+            
+
+
+
+            // Device Category counter
+
+            string category = CheckDeviceCategory().Trim().ToUpper();
+
+            if (category == "LAPTOP")
+            {
+                numberOfLaptops += numberOfDevices;
+            }
+            else if (category == "DESKTOP")
+            {
+                numberOfDesktops += numberOfDevices;
+            }
+            else
+            {
+                numberOfOtherDevices += numberOfDevices;
+            }
+
+
+            //Display cost of  the devices
+            totalDeviceCost = numberOfDevices * deviceCost;
+            sumDeviceInput += totalDeviceCost;
+
+            Console.WriteLine("\n----- Insurance Summary -----");
+            Console.WriteLine($"\nTotal cost for {numberOfDevices} x {deviceName} = {totalDeviceCost}.");
+            Console.WriteLine("Month:   Value Loss:");
+
+            //loop 6 times
+            double subtractionAmount;
+            for (int monthCounter = 1; monthCounter <= 6; monthCounter++)
+            {
+                subtractionAmount = (percentage / 100) * newDeviceValue;
+                newDeviceValue = newDeviceValue - subtractionAmount;
+
+                Console.WriteLine($"{monthCounter}\t\t{Math.Round(newDeviceValue, 2)}");
+
+            }
+            Console.WriteLine($"Category: {category}\n");
+
+            // Display most expensive device name and cost
+
+            if (deviceCost > mostExpensiveDevice)
+            {
+                mostExpensiveDevice = deviceCost;
+                mostExpensiveDeviceName = deviceName;
+            }
+
+        }
+
+
+
+        static int NumberOfDevices(List<int> deviceAmount)
+        {
+            int numberOfDevices = 0;
+
+            foreach (int device in deviceAmount)
+            {
+                numberOfDevices += device;
+            }
+
+            return numberOfDevices;
+        }
+
+        // When run...
+        static void Main(string[] args)
+        {
+
+
+            string proceed = "";
+            while (proceed.Equals(""))
+            {
+                OneDevice();
+
+                proceed = CheckProceed();
+
+            }
+
+            Console.Clear();
+
+            Console.WriteLine("\n----- Summative Report -----\n");
+            Console.WriteLine($"\nNumber of Laptops: {numberOfLaptops}");
+            Console.WriteLine($"Number of Desktops: {numberOfDesktops}");
+            Console.WriteLine($"Number of Other Devices: {numberOfOtherDevices}");
+
+            Console.WriteLine($"\nTotal amount value of insurance: ${FormatToDollar(sumDeviceInput)}");
+
+            Console.WriteLine($"\nMost expensive device is - {mostExpensiveDeviceName} @ ${FormatToDollar(mostExpensiveDevice)}");
+
+            Console.WriteLine("\n\n\n-----------------------------------------------------------\n\n\n");
+        }
+
     }
 
 }
